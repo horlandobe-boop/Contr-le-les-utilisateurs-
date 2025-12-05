@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vérification des Utilisateurs - Microtâche Mila Vola</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --primary-light: #edf2ff;
+      --secondary: #3f37c9;
+      --success: #4cc9f0;
+      --success-dark: #3ab4d8;
+      --warning: #f72585;
+      --danger: #e63946;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-300: #dee2e6;
+      --gray-400: #ced4da;
+      --gray-500: #adb5bd;
+      --gray-600: #6c757d;
+      --gray-700: #495057;
+      --gray-800: #343a40;
+      --gray-900: #212529;
+      --border-radius: 12px;
+      --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      --box-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.12);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --bonus: #ff9e00;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8f9fc, #eef2f9);
+      color: var(--gray-800);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      color: white;
+      padding: 1.5rem 0;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .app-title {
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      font-size: 1.8rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .app-subtitle {
+      font-weight: 400;
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+    
+    .section-card {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      transition: var(--transition);
+      border: 1px solid var(--gray-200);
+    }
+    
+    .section-title {
+      color: var(--secondary);
+      font-weight: 700;
+      margin-bottom: 1.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--primary);
+      display: inline-block;
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 1.75rem 0;
+    }
+    
+    .stat-item {
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .stat-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .search-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+    
+    .search-container input {
+      flex: 1;
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
+      border: 1px solid var(--gray-300);
+    }
+    
+    .search-container button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0 1.75rem;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    
+    .users-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 1.25rem;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+    
+    .users-table th {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    .users-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .users-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .users-table tr:nth-child(even) {
+      background-color: var(--gray-100);
+    }
+    
+    .users-table tr:hover {
+      background-color: var(--primary-light);
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .btn-action {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: var(--transition);
+    }
+    
+    .btn-view {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-view:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-block {
+      background: var(--warning);
+      color: white;
+    }
+    
+    .btn-block:hover {
+      background: #e11d74;
+    }
+    
+    .btn-delete {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .btn-delete:hover {
+      background: #d0343f;
+    }
+    
+    .logout-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 0.65rem 1.25rem;
+      font-weight: 600;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .logout-btn:hover {
+      background: #d0343f;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 2.5rem;
+      color: var(--gray-600);
+      border: 2px dashed var(--gray-300);
+      border-radius: var(--border-radius);
+      background: var(--gray-100);
+    }
+    
+    @media (max-width: 768px) {
+      .users-table {
+        display: block;
+        overflow-x: auto;
+      }
+      
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .modal-content {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      border: none;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .modal-header {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      padding: 1.25rem 1.5rem;
+    }
+    
+    /* Style pour la page d'accès */
+    .access-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 2rem;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow-hover);
+      text-align: center;
+    }
+    
+    .access-logo {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      color: white;
+      font-size: 2rem;
+    }
+    
+    .access-title {
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .access-input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--gray-300);
+      border-radius: 10px;
+      font-size: 1.2rem;
+      text-align: center;
+      letter-spacing: 3px;
+      margin: 1.5rem 0;
+      transition: var(--transition);
+    }
+    
+    .access-input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+    
+    .access-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      width: 100%;
+      transition: var(--transition);
+    }
+    
+    .access-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+    
+    .error-message {
+      color: var(--danger);
+      margin-top: 1rem;
+      display: none;
+    }
+    
+    .badge-status {
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .badge-active {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .badge-blocked {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .referral-details {
+      background: var(--primary-light);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-top: 1rem;
+      border: 1px solid var(--gray-300);
+    }
+  </style>
+</head>
+<body>
+  <!-- Page d'accès avec code -->
+  <div id="accessPage" class="access-container">
+    <div class="access-logo">
+      <i class="fas fa-user-shield"></i>
+    </div>
+    <h2 class="access-title">Accès Administration</h2>
+    <p>Entrez le code d'accès pour continuer</p>
+    
+    <input type="password" id="accessCode" class="access-input" placeholder="000000" maxlength="6">
+    
+    <button onclick="checkAccessCode()" class="access-btn">
+      <i class="fas fa-lock-open me-2"></i> Accéder
+    </button>
+    
+    <div id="errorMessage" class="error-message">
+      <i class="fas fa-exclamation-circle me-1"></i> Code incorrect
+    </div>
+  </div>
+
+  <!-- Interface principale (cachée par défaut) -->
+  <div id="appContainer" class="app-container" style="display:none;">
+    <div class="header">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h1 class="app-title">Vérification des Utilisateurs</h1>
+            <p class="app-subtitle">Microtâche Mila Vola - Administration</p>
+          </div>
+          <div class="col-md-4 text-end">
+            <button id="logoutBtn" class="logout-btn">
+              <i class="fas fa-sign-out-alt me-1"></i> Sortir
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Statistiques générales -->
+      <div class="section-card">
+        <h4 class="section-title"><i class="fas fa-chart-bar me-2"></i>Statistiques Globales</h4>
+        <div class="stats-container">
+          <div class="stat-item">
+            <div class="stat-number" id="totalUsers">0</div>
+            <div class="stat-label">Utilisateurs Totaux</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="totalReferrals">0</div>
+            <div class="stat-label">Filleuls Totaux</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="totalGains">0 Ar</div>
+            <div class="stat-label">Gains Totaux</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="totalBonus">0 Ar</div>
+            <div class="stat-label">Bonus Totaux</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recherche -->
+      <div class="section-card">
+        <h4 class="section-title"><i class="fas fa-search me-2"></i>Recherche d'Utilisateur</h4>
+        <div class="search-container">
+          <input type="text" id="searchInput" placeholder="Rechercher par nom, email ou téléphone...">
+          <button onclick="searchUsers()">
+            <i class="fas fa-search me-1"></i> Rechercher
+          </button>
+        </div>
+      </div>
+
+      <!-- Liste des utilisateurs -->
+      <div class="section-card">
+        <h4 class="section-title"><i class="fas fa-users me-2"></i>Liste des Utilisateurs</h4>
+        <div class="table-responsive">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Filleuls</th>
+                <th>Gains Totaux</th>
+                <th>Gains Parrainage</th>
+                <th>Gains SPIN</th>
+                <th>Gains Gambling</th>
+                <th>Total SPIN</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersList">
+              <tr>
+                <td colspan="9" class="text-center py-4">
+                  <div class="empty-state">
+                    <i class="fas fa-users fa-2x mb-3"></i>
+                    <p>Chargement des utilisateurs...</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de détails utilisateur -->
+  <div class="modal fade" id="userDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-user-circle me-2"></i>Détails de l'Utilisateur</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row mb-4">
+            <div class="col-md-4 text-center">
+              <div class="user-avatar mx-auto" style="width: 80px; height: 80px; font-size: 1.5rem;" id="userAvatar">
+                JD
+              </div>
+              <h5 class="mt-2" id="userFullName">John Doe</h5>
+              <p class="text-muted" id="userEmail">john@example.com</p>
+            </div>
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-6 mb-3">
+                  <label class="form-label">Téléphone</label>
+                  <p class="form-control-static" id="userPhone">+261 34 12 345 67</p>
+                </div>
+                <div class="col-6 mb-3">
+                  <label class="form-label">Date d'inscription</label>
+                  <p class="form-control-static" id="userCreatedAt">01/01/2023</p>
+                </div>
+                <div class="col-6 mb-3">
+                  <label class="form-label">Solde Gains</label>
+                  <p class="form-control-static fw-bold" id="userGain">0 Ar</p>
+                </div>
+                <div class="col-6 mb-3">
+                  <label class="form-label">Solde Dépôt</label>
+                  <p class="form-control-static" id="userDepot">0 Ar</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <div class="stat-item text-center">
+                <div class="stat-number" id="detailReferrals">0</div>
+                <div class="stat-label">Filleuls</div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stat-item text-center">
+                <div class="stat-number" id="detailTotalGains">0 Ar</div>
+                <div class="stat-label">Gains Totaux</div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stat-item text-center">
+                <div class="stat-number" id="detailBonusGains">0 Ar</div>
+                <div class="stat-label">Gains Parrainage</div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stat-item text-center">
+                <div class="stat-number" id="detailSpinCount">0</div>
+                <div class="stat-label">Total SPIN</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Détails des filleuls -->
+          <div class="referral-details">
+            <h6><i class="fas fa-users me-2"></i>Liste des Filleuls</h6>
+            <div class="table-responsive">
+              <table class="users-table" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Date d'inscription</th>
+                    <th>Gains générés</th>
+                  </tr>
+                </thead>
+                <tbody id="userReferralsList">
+                  <tr>
+                    <td colspan="3" class="text-center py-2">
+                      Aucun filleul
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Section gains détaillés -->
+          <div class="row mt-4">
+            <div class="col-md-6 mb-3">
+              <div class="referral-details">
+                <h6><i class="fas fa-coins me-2"></i>Gains de Parrainage</h6>
+                <p>Total: <span id="userReferralBonus" class="fw-bold">0 Ar</span></p>
+                <p>Commission: 5% des gains de chaque filleul</p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="referral-details">
+                <h6><i class="fas fa-dice me-2"></i>Gains Gambling</h6>
+                <p>Total: <span id="userGamblingGain" class="fw-bold">0 Ar</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-warning" id="blockUserBtn" onclick="blockUser()">
+            <i class="fas fa-ban me-1"></i> Bloquer
+          </button>
+          <button type="button" class="btn btn-danger" id="deleteUserBtn" onclick="deleteUser()">
+            <i class="fas fa-trash me-1"></i> Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmation pour bloquer -->
+  <div class="modal fade" id="blockConfirmModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-ban me-2"></i>Confirmer le blocage</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Êtes-vous sûr de vouloir bloquer cet utilisateur ?</p>
+          <p class="text-warning"><strong>L'utilisateur ne pourra plus accéder à son compte.</strong></p>
+          <input type="hidden" id="blockUserId" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-warning" id="confirmBlockBtn">Bloquer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmation pour supprimer -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-trash me-2"></i>Confirmer la suppression</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</p>
+          <p class="text-danger"><strong>Cette action est irréversible !</strong></p>
+          <p>Toutes les données de l'utilisateur seront supprimées.</p>
+          <input type="hidden" id="deleteUserId" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import { 
+      getFirestore, collection, getDocs, doc, getDoc,
+      query, orderBy, updateDoc, deleteDoc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+
+    // Configuration Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCKOfOqZLr7BGmZbs87Co3tjkSS11rj2M0",
+      authDomain: "mila-vola-55d6e.firebaseapp.com",
+      databaseURL: "https://mila-vola-55d6e-default-rtdb.firebaseio.com",
+      projectId: "mila-vola-55d6e",
+      storageBucket: "mila-vola-55d6e.firebasestorage.app",
+      messagingSenderId: "968310917440",
+      appId: "1:968310917440:web:6cec76c1c5a502f98912a5",
+      measurementId: "G-77V0HPGTV7"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Variables
+    let allUsers = [];
+    let currentUserId = null;
+    const ADMIN_CODE = "080600"; // Code d'accès admin
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', function() {
+      // Vérifier si l'utilisateur a déjà accédé à l'admin
+      const hasAccess = localStorage.getItem('adminAccess') === 'true';
+      
+      if (hasAccess) {
+        showAdminInterface();
+        loadUsers();
+      }
+      
+      // Activer l'entrée avec la touche Entrée
+      document.getElementById('accessCode').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          checkAccessCode();
+        }
+      });
+      
+      // Bouton de déconnexion
+      document.getElementById('logoutBtn').addEventListener('click', function() {
+        logoutAdmin();
+      });
+      
+      // Confirmation de blocage
+      document.getElementById('confirmBlockBtn').addEventListener('click', function() {
+        confirmBlockUser();
+      });
+      
+      // Confirmation de suppression
+      document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        confirmDeleteUser();
+      });
+    });
+
+    // Vérifier le code d'accès
+    window.checkAccessCode = function() {
+      const inputCode = document.getElementById('accessCode').value;
+      const errorMessage = document.getElementById('errorMessage');
+      
+      if (inputCode === ADMIN_CODE) {
+        // Code correct
+        errorMessage.style.display = 'none';
+        
+        // Stocker l'accès dans localStorage
+        localStorage.setItem('adminAccess', 'true');
+        
+        // Afficher l'interface admin
+        showAdminInterface();
+        loadUsers();
+      } else {
+        // Code incorrect
+        errorMessage.style.display = 'block';
+        document.getElementById('accessCode').value = '';
+        document.getElementById('accessCode').focus();
+      }
+    };
+
+    // Afficher l'interface admin
+    function showAdminInterface() {
+      document.getElementById('accessPage').style.display = 'none';
+      document.getElementById('appContainer').style.display = 'block';
+    }
+
+    // Déconnexion admin
+    function logoutAdmin() {
+      localStorage.removeItem('adminAccess');
+      location.reload();
+    }
+
+    // Charger tous les utilisateurs depuis Firebase
+    async function loadUsers() {
+      try {
+        const usersRef = collection(db, "users");
+        const q = query(usersRef, orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        allUsers = [];
+        let totalUsers = 0;
+        let totalReferrals = 0;
+        let totalGains = 0;
+        let totalBonus = 0;
+
+        const usersList = document.getElementById('usersList');
+        usersList.innerHTML = '';
+
+        if (querySnapshot.empty) {
+          usersList.innerHTML = `
+            <tr>
+              <td colspan="9" class="text-center py-4">
+                <div class="empty-state py-0">
+                  <i class="fas fa-users"></i>
+                  <p>Aucun utilisateur trouvé dans la base de données</p>
+                </div>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        for (const docSnap of querySnapshot.docs) {
+          const userData = docSnap.data();
+          const userId = docSnap.id;
+          
+          // Ignorer les comptes admin si existent
+          if (userData.isAdmin) continue;
+          
+          // Calculer les statistiques
+          const referralsCount = userData.referrals ? userData.referrals.length : 0;
+          const totalGain = userData.gain || 0;
+          const bonusGain = userData.bonus || 0;
+          
+          // Pour les données SPIN et Gambling
+          const spinGain = userData.spinGain || userData.spin_gain || 0;
+          const gamblingGain = userData.gamblingGain || userData.gambling_gain || 0;
+          const spinCount = userData.spinCount || userData.spin_count || 0;
+          const isBlocked = userData.blocked || false;
+          
+          totalUsers++;
+          totalReferrals += referralsCount;
+          totalGains += totalGain;
+          totalBonus += bonusGain;
+
+          // Stocker les données utilisateur
+          const user = {
+            id: userId,
+            ...userData,
+            referralsCount,
+            spinGain,
+            gamblingGain,
+            spinCount,
+            isBlocked
+          };
+          allUsers.push(user);
+
+          // Créer la ligne du tableau
+          const row = document.createElement('tr');
+          
+          // Initiales pour l'avatar
+          const initials = getInitials(userData.firstName || '', userData.lastName || '');
+          
+          // Badge de statut
+          const statusBadge = isBlocked 
+            ? '<span class="badge-status badge-blocked">Bloqué</span>'
+            : '<span class="badge-status badge-active">Actif</span>';
+          
+          row.innerHTML = `
+            <td>
+              <div class="user-info">
+                <div class="user-avatar">${initials}</div>
+                <div>
+                  <div class="fw-bold">${userData.firstName || ''} ${userData.lastName || ''}</div>
+                  <div class="small text-muted">${userData.email || ''}</div>
+                </div>
+              </div>
+            </td>
+            <td>${referralsCount}</td>
+            <td>${totalGain.toFixed(2)} Ar</td>
+            <td>${bonusGain.toFixed(2)} Ar</td>
+            <td>${spinGain.toFixed(2)} Ar</td>
+            <td>${gamblingGain.toFixed(2)} Ar</td>
+            <td>${spinCount}</td>
+            <td>${statusBadge}</td>
+            <td>
+              <button class="btn-action btn-view" onclick="showUserDetails('${userId}')">
+                <i class="fas fa-eye"></i> Voir
+              </button>
+              <button class="btn-action btn-block" onclick="openBlockModal('${userId}')">
+                <i class="fas fa-ban"></i>
+              </button>
+              <button class="btn-action btn-delete" onclick="openDeleteModal('${userId}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          `;
+          
+          usersList.appendChild(row);
+        }
+
+        // Mettre à jour les statistiques globales
+        document.getElementById('totalUsers').textContent = totalUsers;
+        document.getElementById('totalReferrals').textContent = totalReferrals;
+        document.getElementById('totalGains').textContent = totalGains.toFixed(2) + ' Ar';
+        document.getElementById('totalBonus').textContent = totalBonus.toFixed(2) + ' Ar';
+
+      } catch (error) {
+        console.error("Erreur lors du chargement des utilisateurs depuis Firebase:", error);
+        showNotification("Erreur lors du chargement des utilisateurs", "danger");
+        
+        // Afficher un message d'erreur
+        const usersList = document.getElementById('usersList');
+        usersList.innerHTML = `
+          <tr>
+            <td colspan="9" class="text-center py-4">
+              <div class="empty-state py-0">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Erreur de connexion à la base de données</p>
+                <p class="small">${error.message}</p>
+                <button class="btn btn-primary mt-2" onclick="loadUsers()">
+                  <i class="fas fa-redo"></i> Réessayer
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    // Rechercher des utilisateurs
+    window.searchUsers = function() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const filteredUsers = allUsers.filter(user => {
+        const fullName = `${user.firstName || ''} ${user.lastName || ''}`.toLowerCase();
+        const email = (user.email || '').toLowerCase();
+        const phone = (user.phone || '').toLowerCase();
+        
+        return fullName.includes(searchTerm) || 
+               email.includes(searchTerm) || 
+               phone.includes(searchTerm);
+      });
+
+      displayFilteredUsers(filteredUsers);
+    }
+
+    // Afficher les utilisateurs filtrés
+    function displayFilteredUsers(users) {
+      const usersList = document.getElementById('usersList');
+      usersList.innerHTML = '';
+
+      if (users.length === 0) {
+        usersList.innerHTML = `
+          <tr>
+            <td colspan="9" class="text-center py-4">
+              <div class="empty-state py-0">
+                <i class="fas fa-search"></i>
+                <p>Aucun utilisateur trouvé</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      users.forEach(user => {
+        const initials = getInitials(user.firstName || '', user.lastName || '');
+        const statusBadge = user.isBlocked 
+          ? '<span class="badge-status badge-blocked">Bloqué</span>'
+          : '<span class="badge-status badge-active">Actif</span>';
+        
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+          <td>
+            <div class="user-info">
+              <div class="user-avatar">${initials}</div>
+              <div>
+                <div class="fw-bold">${user.firstName || ''} ${user.lastName || ''}</div>
+                <div class="small text-muted">${user.email || ''}</div>
+              </div>
+            </div>
+          </td>
+          <td>${user.referralsCount || 0}</td>
+          <td>${user.gain ? user.gain.toFixed(2) : '0.00'} Ar</td>
+          <td>${user.bonus ? user.bonus.toFixed(2) : '0.00'} Ar</td>
+          <td>${user.spinGain ? user.spinGain.toFixed(2) : '0.00'} Ar</td>
+          <td>${user.gamblingGain ? user.gamblingGain.toFixed(2) : '0.00'} Ar</td>
+          <td>${user.spinCount || 0}</td>
+          <td>${statusBadge}</td>
+          <td>
+            <button class="btn-action btn-view" onclick="showUserDetails('${user.id}')">
+              <i class="fas fa-eye"></i> Voir
+            </button>
+            <button class="btn-action btn-block" onclick="openBlockModal('${user.id}')">
+              <i class="fas fa-ban"></i>
+            </button>
+            <button class="btn-action btn-delete" onclick="openDeleteModal('${user.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        `;
+        
+        usersList.appendChild(row);
+      });
+    }
+
+    // Afficher les détails d'un utilisateur
+    window.showUserDetails = async function(userId) {
+      try {
+        currentUserId = userId;
+        
+        // Récupérer les données de l'utilisateur depuis Firebase
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        
+        if (!userSnap.exists()) {
+          showNotification("Utilisateur non trouvé", "warning");
+          return;
+        }
+
+        const userData = userSnap.data();
+        
+        // Mettre à jour les informations de base
+        const initials = getInitials(userData.firstName || '', userData.lastName || '');
+        document.getElementById('userAvatar').textContent = initials;
+        document.getElementById('userFullName').textContent = `${userData.firstName || ''} ${userData.lastName || ''}`;
+        document.getElementById('userEmail').textContent = userData.email || 'Non spécifié';
+        document.getElementById('userPhone').textContent = userData.phone || 'Non spécifié';
+        document.getElementById('userCreatedAt').textContent = userData.createdAt ? 
+          new Date(userData.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : 'Date inconnue';
+        document.getElementById('userGain').textContent = (userData.gain || 0).toFixed(2) + ' Ar';
+        document.getElementById('userDepot').textContent = (userData.depot || 0).toFixed(2) + ' Ar';
+        
+        // Mettre à jour les statistiques détaillées
+        const referralsCount = userData.referrals ? userData.referrals.length : 0;
+        document.getElementById('detailReferrals').textContent = referralsCount;
+        document.getElementById('detailTotalGains').textContent = (userData.gain || 0).toFixed(2) + ' Ar';
+        document.getElementById('detailBonusGains').textContent = (userData.bonus || 0).toFixed(2) + ' Ar';
+        document.getElementById('detailSpinCount').textContent = userData.spinCount || userData.spin_count || 0;
+        document.getElementById('userReferralBonus').textContent = (userData.bonus || 0).toFixed(2) + ' Ar';
+        document.getElementById('userGamblingGain').textContent = (userData.gamblingGain || userData.gambling_gain || 0).toFixed(2) + ' Ar';
+        
+        // Mettre à jour les boutons selon le statut
+        const blockBtn = document.getElementById('blockUserBtn');
+        if (userData.blocked) {
+          blockBtn.innerHTML = '<i class="fas fa-check me-1"></i> Débloquer';
+          blockBtn.classList.remove('btn-warning');
+          blockBtn.classList.add('btn-success');
+        } else {
+          blockBtn.innerHTML = '<i class="fas fa-ban me-1"></i> Bloquer';
+          blockBtn.classList.remove('btn-success');
+          blockBtn.classList.add('btn-warning');
+        }
+        
+        // Charger les filleuls
+        await loadUserReferrals(userData.referrals || []);
+        
+        // Afficher la modal
+        const modal = new bootstrap.Modal(document.getElementById('userDetailsModal'));
+        modal.show();
+        
+      } catch (error) {
+        console.error("Erreur lors du chargement des détails:", error);
+        showNotification("Erreur lors du chargement des détails", "danger");
+      }
+    }
+
+    // Charger les filleuls d'un utilisateur
+    async function loadUserReferrals(referralIds) {
+      const referralsList = document.getElementById('userReferralsList');
+      referralsList.innerHTML = '';
+
+      if (referralIds.length === 0) {
+        referralsList.innerHTML = `
+          <tr>
+            <td colspan="3" class="text-center py-2">
+              Aucun filleul
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      for (const referralId of referralIds) {
+        try {
+          const referralRef = doc(db, "users", referralId);
+          const referralSnap = await getDoc(referralRef);
+          
+          if (referralSnap.exists()) {
+            const referralData = referralSnap.data();
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+              <td>${referralData.firstName || ''} ${referralData.lastName || ''}</td>
+              <td>${referralData.createdAt ? 
+                new Date(referralData.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : 'Date inconnue'}</td>
+              <td>${(referralData.gain || 0).toFixed(2)} Ar</td>
+            `;
+            
+            referralsList.appendChild(row);
+          }
+        } catch (error) {
+          console.error("Erreur lors du chargement du filleul:", error);
+        }
+      }
+    }
+
+    // Ouvrir la modal de confirmation pour bloquer
+    window.openBlockModal = function(userId) {
+      currentUserId = userId;
+      document.getElementById('blockUserId').value = userId;
+      
+      // Vérifier si l'utilisateur est déjà bloqué
+      const user = allUsers.find(u => u.id === userId);
+      const modalTitle = document.querySelector('#blockConfirmModal .modal-title');
+      const confirmBtn = document.getElementById('confirmBlockBtn');
+      
+      if (user && user.isBlocked) {
+        modalTitle.innerHTML = '<i class="fas fa-check me-2"></i>Confirmer le déblocage';
+        confirmBtn.innerHTML = 'Débloquer';
+      } else {
+        modalTitle.innerHTML = '<i class="fas fa-ban me-2"></i>Confirmer le blocage';
+        confirmBtn.innerHTML = 'Bloquer';
+      }
+      
+      const modal = new bootstrap.Modal(document.getElementById('blockConfirmModal'));
+      modal.show();
+    }
+
+    // Confirmer le blocage/déblocage
+    async function confirmBlockUser() {
+      const userId = document.getElementById('blockUserId').value;
+      if (!userId) return;
+
+      try {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        
+        if (!userSnap.exists()) {
+          showNotification("Utilisateur non trouvé", "warning");
+          return;
+        }
+
+        const userData = userSnap.data();
+        const isCurrentlyBlocked = userData.blocked || false;
+        
+        // Inverser le statut de blocage
+        await updateDoc(userRef, {
+          blocked: !isCurrentlyBlocked,
+          blockedAt: serverTimestamp(),
+          blockedBy: "Admin"
+        });
+
+        showNotification(
+          isCurrentlyBlocked ? "Utilisateur débloqué avec succès" : "Utilisateur bloqué avec succès", 
+          "success"
+        );
+
+        // Fermer les modals
+        bootstrap.Modal.getInstance(document.getElementById('blockConfirmModal')).hide();
+        bootstrap.Modal.getInstance(document.getElementById('userDetailsModal')).hide();
+        
+        // Recharger les utilisateurs
+        loadUsers();
+      } catch (error) {
+        console.error("Erreur lors du blocage/déblocage:", error);
+        showNotification("Erreur lors de l'opération", "danger");
+      }
+    }
+
+    // Ouvrir la modal de confirmation pour supprimer
+    window.openDeleteModal = function(userId) {
+      currentUserId = userId;
+      document.getElementById('deleteUserId').value = userId;
+      const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+      modal.show();
+    }
+
+    // Confirmer la suppression
+    async function confirmDeleteUser() {
+      const userId = document.getElementById('deleteUserId').value;
+      if (!userId) return;
+
+      try {
+        const userRef = doc(db, "users", userId);
+        
+        // Vérifier d'abord si l'utilisateur existe
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) {
+          showNotification("Utilisateur non trouvé", "warning");
+          return;
+        }
+
+        // Supprimer l'utilisateur
+        await deleteDoc(userRef);
+
+        showNotification("Utilisateur supprimé avec succès", "success");
+
+        // Fermer les modals
+        bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal')).hide();
+        bootstrap.Modal.getInstance(document.getElementById('userDetailsModal')).hide();
+        
+        // Recharger les utilisateurs
+        loadUsers();
+      } catch (error) {
+        console.error("Erreur lors de la suppression:", error);
+        showNotification("Erreur lors de la suppression", "danger");
+      }
+    }
+
+    // Bloquer un utilisateur (depuis la modal)
+    window.blockUser = function() {
+      if (!currentUserId) return;
+      openBlockModal(currentUserId);
+    }
+
+    // Supprimer un utilisateur (depuis la modal)
+    window.deleteUser = function() {
+      if (!currentUserId) return;
+      openDeleteModal(currentUserId);
+    }
+
+    // Fonctions utilitaires
+    function getInitials(firstName, lastName) {
+      const first = firstName.charAt(0) || '';
+      const last = lastName.charAt(0) || '';
+      return (first + last).toUpperCase();
+    }
+
+    function showNotification(message, type) {
+      // Créer une notification simple
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        background: ${type === 'danger' ? 'var(--danger)' : type === 'warning' ? 'var(--warning)' : type === 'success' ? 'var(--success)' : 'var(--primary)'};
+        color: white;
+        z-index: 10000;
+        box-shadow: var(--box-shadow);
+      `;
+      notification.innerHTML = `
+        <i class="fas fa-${type === 'danger' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'check-circle'} me-2"></i>
+        ${message}
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
